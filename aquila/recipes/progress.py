@@ -1,4 +1,5 @@
 from .base import Recipe
+from numpy import isnan
 import time
 
 class Line(Recipe):
@@ -20,8 +21,8 @@ class Line(Recipe):
         y = kwargs[self.y_key] if self.fun is None else self.fun(**kwargs)
 
         # smoothing of data
-        if len(self.x) > 0:
-            x = self.leak*x + (1 - self.leak)*self.x[-1]
+        if len(self.y) > 0 and not isnan(self.y[-1]):
+            y = self.leak*y + (1 - self.leak)*self.y[-1]
 
         self.x.append(x)
         self.y.append(y)
